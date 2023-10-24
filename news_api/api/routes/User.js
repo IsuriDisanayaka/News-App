@@ -3,6 +3,8 @@ const { User, userValidationSchema } = require('../models/User');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+
 
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -29,10 +31,14 @@ router.post('/user/save', async (req, res) => {
         const newUser = new User({
             userId: userCount + 1,
             role: 1,
-            
+
             ...req.body,
-            verificationToken:verificationToken,
+            verificationToken: verificationToken,
         });
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
+
+        newUser.password = hashedPassword;
 
         await newUser.save();
 

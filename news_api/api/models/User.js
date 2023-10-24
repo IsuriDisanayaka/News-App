@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const bcrypt = require('bcryptjs');
+
 
 const userSchema = new mongoose.Schema({
     userId: {
@@ -11,8 +13,9 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
     },
-    verificationToken: { 
+    verificationToken: {
         type: String,
     },
     isVerified: {
@@ -30,6 +33,21 @@ const userSchema = new mongoose.Schema({
     }
 
 });
+
+userSchema.statics.login = async function (email, password) {
+
+    const user = await this.findOne({ email });
+    if (user) {
+        const auth = await bcrypt.compare(password, user.password);
+        if (auth) {
+            return user;
+        }
+        throw Error("incorrect password");
+    }
+    throw Error("Incorrect Email");
+}
+
+
 const User = mongoose.model('User', userSchema);
 const userValidationSchema = Joi.object({
     fullName: Joi.string().required(),
@@ -39,6 +57,8 @@ const userValidationSchema = Joi.object({
 
 
 });
+
+
 module.exports = {
     User,
     userValidationSchema
