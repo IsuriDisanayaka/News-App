@@ -5,6 +5,7 @@ const express = require('express');
 
 const authRoutes = require('../routes/Auth')
 const userRoutes = require('../routes/User')
+const articleRoutes = require('../routes/Article')
 
 
 const PORT = process.env.PORT
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(authRoutes);
 app.use(userRoutes);
+app.use(articleRoutes);
 
 
 connectDB();
