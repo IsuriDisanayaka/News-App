@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Article,articleValidationSchema } = require('../models/Article');
+const { Article, articleValidationSchema } = require('../models/Article');
 
 
 router.post('/article/save', async (req, res) => {
@@ -11,7 +11,7 @@ router.post('/article/save', async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
     const newArticle = new Article({
-        articleId: articleCount + 1,
+      articleId: articleCount + 1,
       ...req.body
     });
     await newArticle.save();
@@ -36,27 +36,27 @@ router.get('/article/search', async (req, res) => {
   try {
     const searchQuery = {};
     const queryParameters = [
-        'articleTitle',
-       'articleDescription',
-        'articleBody',
-        'image',
-        'createdDate',
-       ' authorName',
+      'articleTitle',
+      'articleDescription',
+      'articleBody',
+      'image',
+      'createdDate',
+      ' authorName',
     ];
-  
+
     queryParameters.forEach(param => {
       if (req.query[param]) {
         searchQuery[param] = req.query[param];
       }
     });
-  
+
     const articles = await Article.find(searchQuery);
-  
+
     res.json(articles);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
-  
+
 });
 
 router.delete('/article/:articleId', async (req, res) => {
@@ -79,7 +79,7 @@ router.put('/article/:articleId', async (req, res) => {
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
-    const article= await Article.findOne({articleId: req.params.articleId });
+    const article = await Article.findOne({ articleId: req.params.articleId });
     if (!article) {
       return res.status(404).json({ error: "Article not found" });
     }

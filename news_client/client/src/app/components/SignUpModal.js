@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
@@ -33,7 +32,6 @@ function SignUpModal({ onClose }) {
                 reEnterpassword
             });
 
-            console.log('User registration success:', response.data);
 
             toast.success('successfully!', { autoClose: 3000 });
             toast.info('Please Check your email and verify email', { autoClose: 4000, })

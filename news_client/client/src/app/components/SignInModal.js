@@ -15,7 +15,7 @@ function SignInModal({ onClose }) {
             const response = await axios.post('http://localhost:8080/login', { email, password });
 
             if (response.data.role === 'admin') {
-               
+
 
             } else if (response.data.role === 'user') {
 
@@ -24,8 +24,10 @@ function SignInModal({ onClose }) {
 
             }
             const token = response.data.token;
-
+            const role = response.data.role;
+            localStorage.setItem('role', role);
             localStorage.setItem('token', token);
+            window.location.reload();
             toast.success('successfully!', { autoClose: 3000 });
 
             onClose();

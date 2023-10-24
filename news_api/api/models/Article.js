@@ -15,9 +15,6 @@ const articleSchema = new mongoose.Schema({
     articleBody: {
         type: String,
     },
-    image: {
-        type: String,
-    },
     createdDate: {
         type: Date,
     },
@@ -33,7 +30,6 @@ const articleValidationSchema = Joi.object({
     articleTitle: Joi.string().required(),
     articleDescription: Joi.string().required(),
     articleBody: Joi.string().required(),
-    image: Joi.string().required(),
     createdDate: Joi.date().required(),
     authorName: Joi.string().required(),
 });
